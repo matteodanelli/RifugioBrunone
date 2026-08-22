@@ -1,21 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import facebookIcon from '../assets/images/Facebook_Logo_Primary.png';
-
 const year = new Date().getFullYear();
 ---
 
 <footer class="mt-16 border-t border-brunone-200 bg-brunone-900 text-brunone-100">
-  <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-8 text-sm">
-    <a
-      class="inline-block shrink-0 transition-opacity hover:opacity-80"
-      href="https://www.facebook.com/Rifugio-Brunone-855063957954205"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Facebook"
-    >
-      <Image src={facebookIcon} alt="" format="webp" width={28} height={28} class="h-7 w-7" />
-    </a>
+  <div class="mx-auto max-w-5xl px-4 py-2 text-center text-xs">
     <p class="text-brunone-200/70">
       &copy; 2013&ndash;{year} Matteo Danelli, Massimiliano Tebaldi &mdash; Tutti i diritti riservati.
     </p>
