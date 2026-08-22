@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const percorsi = [
+  {
+    nome: 'Da Fiumenero, frazione di Valbondione',
+    sentiero: 'Sentiero CAI 227',
+    link: 'http://geoportale.caibergamo.it/sentiero/227',
+    durata: "4h30'",
+    testo: `Direttamente sulla strada statale si lascia l'auto presso il parcheggio in zona cimitero o giardinetti
+      pubblici (il primo punto di partenza è il più frequentato e consigliato). Entrambi i percorsi si ricongiungono
+      dopo 40 minuti di cammino; è da segnalare che il primo nella prima parte sale più dolcemente ed il secondo più
+      ripido e più isolato.
+      La zona è ricca di acqua ed il cammino segue il torrente della valle per gran parte del percorso; dopo circa
+      mezz'ora di cammino si giunge all'ultima casa pastorizia delimitata da un grande spiazzo dove pascolano
+      cavalli e capre di origine orobica, poco dopo si raggiunge il primo ponte di legno ed attraversatolo si inizia
+      la salita tenendo il torrente a sinistra.
+      Fino all'uscita dal bosco il sentiero sale relativamente dolce e dopo 1h15' si raggiunge una grande spianata
+      detta Pian del Campo. Mantenendo la destra ci si dirige verso una bellissima cascata, quindi si giunge al Pian
+      dell'Aser. Sorpassato il secondo ponte si inizia a vedere il rifugio, che dista ancora circa un'ora e mezza di
+      ripida salita.
+      Il rifugio Antonio Baroni al Brunone è la meta più dura delle Orobie bergamasche, molto amata dagli
+      escursionisti che vogliono mettere alla prova la loro preparazione.`,
+  },
+  {
+    nome: 'Dal rifugio F.lli Calvi',
+    sentiero: 'Sentiero CAI 225',
+    link: 'http://geoportale.caibergamo.it/sentiero/225',
+    durata: "4h30'",
+    testo: 'Il percorso fa parte della quarta tappa del Sentiero delle Orobie.',
+  },
+  {
+    nome: 'Dal rifugio Coca',
+    sentiero: 'Sentiero CAI 302 (alto, 3h) oppure CAI 330 (basso, 6h)',
+    link: 'http://geoportale.caibergamo.it/sentiero/302',
+    durata: null,
+    testo: 'Entrambi gli itinerari fanno parte del Sentiero delle Orobie.',
+  },
+  {
+    nome: 'Dal rifugio Mambretti in Valtellina',
+    sentiero: null,
+    link: null,
+    durata: null,
+    testo: 'Passando per il passo della Scaletta. È un percorso EEA.',
+  },
+];
+
+const links = [
+  { href: '/mappa/', img: '/images/dovesiamo.jpg', title: 'Mappa', desc: 'Mappa dei sentieri per raggiungere il rifugio' },
+  { href: 'https://www.youtube.com/watch?v=x6Eozg4mXsI', img: '/images/percorsi.jpg', title: 'Video del sentiero 227', desc: 'Breve video sul percorso 227 da Fiumenero' },
+  { href: '/ascensioni/', img: '/images/ascensioni.jpg', title: 'Ascensioni', desc: 'Possibili ascensioni e traversate a partire dal rifugio' },
+];
+---
+
+<Layout title="Dove siamo" description="Come raggiungere il rifugio Brunone: i sentieri CAI da Fiumenero e dai rifugi vicini.">
+  <h1 class="font-display text-3xl font-semibold text-brunone-900">Dove siamo</h1>
+  <p class="mt-4 max-w-2xl text-brunone-800">
+    Il rifugio Brunone è situato in alta Val Seriana, nel comune di Valbondione, frazione di Fiumenero, sulle
+    pendici del pizzo Brunone e del pizzo Redorta, a quota 2297&nbsp;m s.l.m. Il rifugio può essere raggiunto con i
+    seguenti percorsi:
+  </p>
+
+  <div class="mt-8 space-y-6">
+    {percorsi.map((p) => (
+      <div class="rounded-lg border border-brunone-200 bg-white/60 p-5">
+        <h2 class="font-display text-lg font-semibold text-brunone-800">
+          {p.nome} &mdash;{' '}
+          {p.link ? <a href={p.link} class="text-brunone-600 underline">{p.sentiero}</a> : p.sentiero}
+          {p.durata && <span class="text-brunone-600">, {p.durata}</span>}
+        </h2>
+        <p class="mt-2 whitespace-pre-line text-sm text-brunone-700">{p.testo}</p>
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-10 grid gap-6 sm:grid-cols-3">
+    {links.map((l) => (
+      <a href={l.href} class="rounded-lg border border-brunone-200 bg-white/60 p-4 hover:shadow-md">
+        <img src={l.img} alt={l.title} class="mb-3 aspect-video w-full rounded object-cover" />
+        <p class="font-medium text-brunone-800">{l.title}</p>
+        <p class="mt-1 text-sm text-brunone-600">{l.desc}</p>
+      </a>
+    ))}
+  </div>
+</Layout>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const linkUtili = [
+  { href: 'http://www.caibergamo.it', label: 'CAI Bergamo' },
+  { href: 'http://www.centrometeolombardo.com/content.asp?contentid=1150', label: 'Centro Meteorologico Lombardo — Bollettino' },
+  { href: 'http://www.rifugi.lombardia.it', label: 'Rifugi Lombardia' },
+  { href: 'http://www.turismovalbondione.it', label: 'Turismo Valbondione' },
+  { href: 'http://www.diska.it', label: 'Diska Photos — Rifugi e bivacchi lombardi' },
+];
+---
+
+<Layout title="Contatti" description="Contatti del rifugio Brunone: gestore, telefono, e-mail.">
+  <h1 class="font-display text-3xl font-semibold text-brunone-900">Contatti</h1>
+
+  <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+    <div class="rounded-lg border border-brunone-200 bg-white/60 p-4">
+      <dt class="text-sm font-semibold text-brunone-600">Gestore</dt>
+      <dd class="mt-1 text-brunone-900">Marco Brignoli</dd>
+    </div>
+    <div class="rounded-lg border border-brunone-200 bg-white/60 p-4">
+      <dt class="text-sm font-semibold text-brunone-600">Telefono gestore</dt>
+      <dd class="mt-1"><a class="text-brunone-800 hover:underline" href="tel:+393454608973">+39 345 460 8973</a></dd>
+    </div>
+    <div class="rounded-lg border border-brunone-200 bg-white/60 p-4">
+      <dt class="text-sm font-semibold text-brunone-600">Telefono rifugio</dt>
+      <dd class="mt-1"><a class="text-brunone-800 hover:underline" href="tel:+390346194096">+39 0346 19 46 096</a></dd>
+    </div>
+    <div class="rounded-lg border border-brunone-200 bg-white/60 p-4">
+      <dt class="text-sm font-semibold text-brunone-600">E-mail gestore</dt>
+      <dd class="mt-1"><a class="text-brunone-800 hover:underline" href="mailto:marcobrigno@libero.it">marcobrigno@libero.it</a></dd>
+    </div>
+  </dl>
+
+  <p class="mt-4">
+    <a class="font-medium text-brunone-700 hover:underline" href="https://www.facebook.com/Rifugio-Brunone-855063957954205">
+      Pagina Facebook del rifugio
+    </a>
+  </p>
+
+  <section class="mt-10">
+    <h2 class="font-display text-xl font-semibold text-brunone-800">Link utili</h2>
+    <ul class="mt-2 space-y-1">
+      {linkUtili.map((l) => (
+        <li><a class="text-brunone-700 hover:underline" href={l.href}>{l.label}</a></li>
+      ))}
+    </ul>
+  </section>
+</Layout>

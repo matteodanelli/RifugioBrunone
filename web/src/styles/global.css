@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  /* Palette ispirata al rifugio: verdi orobici, pietra, un accento "tramonto" */
+  --color-brunone-50: #f4f7f4;
+  --color-brunone-100: #e3ebe3;
+  --color-brunone-200: #c3d5c4;
+  --color-brunone-400: #6f9873;
+  --color-brunone-600: #3f6b45;
+  --color-brunone-700: #325636;
+  --color-brunone-800: #2a4530;
+  --color-brunone-900: #23392a;
+
+  --color-stone-bg: #f7f5f0;
+  --color-sunset: #c96a3c;
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-stone-bg);
+  font-family: var(--font-sans);
+  color: var(--color-brunone-900);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}

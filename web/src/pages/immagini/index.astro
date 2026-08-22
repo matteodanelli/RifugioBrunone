@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { GALLERIES } from '../../data/galleries';
+---
+
+<Layout title="Immagini" description="Le gallerie fotografiche del rifugio Brunone: panorami, vita al rifugio, flora e fauna.">
+  <h1 class="font-display text-3xl font-semibold text-brunone-900">Immagini</h1>
+
+  <div class="mt-6 grid gap-6 sm:grid-cols-3">
+    {GALLERIES.map((g) => (
+      <a
+        href={g.migrated ? `/immagini/${g.slug}/` : undefined}
+        aria-disabled={!g.migrated}
+        class:list={[
+          'rounded-lg border border-brunone-200 bg-white/60 p-4',
+          g.migrated ? 'hover:shadow-md' : 'pointer-events-none opacity-50',
+        ]}
+      >
+        <img src={g.cover} alt={g.title} class="mb-3 aspect-video w-full rounded object-cover" />
+        <p class="font-medium text-brunone-800">{g.title}</p>
+        <p class="mt-1 text-sm text-brunone-600">
+          {g.migrated ? `${g.count} foto` : 'Da migrare — vedi MIGRATION.md'}
+        </p>
+      </a>
+    ))}
+  </div>
+</Layout>

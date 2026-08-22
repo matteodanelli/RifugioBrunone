@@ -1,0 +1,10 @@
+{
+  // Sito interamente statico: nessun Worker, solo asset serviti da Cloudflare.
+  // Deploy: npx wrangler deploy (legge questo file dalla working directory).
+  "name": "rifugio-brunone",
+  "compatibility_date": "2026-08-22",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+}

@@ -1,0 +1,56 @@
+---
+import { NAV_ITEMS } from '../data/nav';
+
+const { pathname } = Astro.url;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b border-brunone-200 bg-stone-bg/90 backdrop-blur">
+  <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+    <a href="/" class="flex items-center gap-2">
+      <img src="/images/banner1.png" alt="Rifugio Brunone" class="h-10 w-auto" />
+      <span class="font-display text-lg font-semibold text-brunone-800">Rifugio Brunone</span>
+    </a>
+
+    <nav>
+      <button
+        id="nav-toggle"
+        class="rounded-md border border-brunone-200 px-3 py-1.5 text-sm font-medium text-brunone-800 sm:hidden"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        Menu
+      </button>
+
+      <ul
+        id="nav-menu"
+        class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-brunone-200 bg-stone-bg px-4 py-3 sm:static sm:flex sm:flex-row sm:gap-6 sm:border-0 sm:bg-transparent sm:p-0"
+      >
+        {NAV_ITEMS.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'block rounded px-2 py-1.5 text-sm font-medium transition-colors hover:text-brunone-600 sm:px-0 sm:py-0',
+                isActive(item.href) ? 'text-brunone-700 underline underline-offset-4' : 'text-brunone-900',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-menu');
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('flex');
+    menu?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+</script>
