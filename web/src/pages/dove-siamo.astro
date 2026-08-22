@@ -7,6 +7,7 @@ const percorsi = [
     sentiero: 'Sentiero CAI 227',
     link: 'http://geoportale.caibergamo.it/sentiero/227',
     durata: "4h30'",
+    videoUrl: 'https://www.youtube.com/watch?v=x6Eozg4mXsI',
     testo: `Direttamente sulla strada statale si lascia l'auto presso il parcheggio in zona cimitero o giardinetti
       pubblici (il primo punto di partenza è il più frequentato e consigliato). Entrambi i percorsi si ricongiungono
       dopo 40 minuti di cammino; è da segnalare che il primo nella prima parte sale più dolcemente ed il secondo più
@@ -45,16 +46,49 @@ const percorsi = [
   },
 ];
 
-const links = [
-  { href: '/mappa/', img: '/images/dovesiamo.jpg', title: 'Mappa', desc: 'Mappa dei sentieri per raggiungere il rifugio' },
-  { href: 'https://www.youtube.com/watch?v=x6Eozg4mXsI', img: '/images/percorsi.jpg', title: 'Video del sentiero 227', desc: 'Breve video sul percorso 227 da Fiumenero' },
-  { href: '/ascensioni/', img: '/images/ascensioni.jpg', title: 'Ascensioni', desc: 'Possibili ascensioni e traversate a partire dal rifugio' },
+// Coordinate approssimative del rifugio Brunone (2297 m, Valbondione BG). Prima su una
+// pagina /mappa/ a sé, ora integrata qui direttamente.
+const lat = 46.0206;
+const lon = 9.9576;
+const bbox = [lon - 0.06, lat - 0.05, lon + 0.06, lat + 0.05].join('%2C');
+
+// Prima su una pagina /ascensioni/ a sé, ora integrate qui direttamente.
+const ascensioni = [
+  {
+    nome: 'Pizzo Redorta 3038 m AD — via normale',
+    testo: `Si prosegue sempre seguendo gli omini di pietra fino a raggiungere il ghiacciaio (ormai quasi
+      estinto). Mettere i ramponi e proseguire verso il canale Tua, proprio di fronte, che divide la Fetta di
+      Polenta Scais dalla cresta Redorta. 60 m prima del canale Tua, a destra, si trova il canalone di salita: se
+      ben innevato lo si percorre tutto per poi prendere a destra e, superando delle roccette, arrivare alla facile
+      cresta e quindi alla vetta.
+      N.B. Se il canalone non è ben innevato si sconsiglia la salita: si passa in progressione su tutta la cresta
+      che inizia dove il canale Tua termina a destra, arrampicando su rocce esposte e friabili fino all'anticima,
+      per poi scendere nel canalone e proseguire per la vetta. La salita al Redorta è una delle più belle ascensioni
+      delle Orobie, alla portata di tutti coloro che hanno un poco di pratica alpinistica.`,
+  },
+  {
+    nome: 'Punta di Scais 3038 m AD — canale Antonio Baroni',
+    testo: `Come per il Redorta, ci si porta sul ghiacciaio per il sentiero 552 e da lì si prende la discesa
+      principale a destra, dove confluisce la valle del ghiacciaio; scendendo si tiene la destra ed alla seconda
+      insenatura si inizia la salita negli sfasciumi di pietra. Di recente tracciatura, i segnali sono molto
+      evidenti fin sotto la parte spittata che porta in vetta allo Scais. Le difficoltà aumentano molto in presenza
+      di neve nella conca antistante la via di arrampicata. La vetta dello Scais è, a detta di molti, la cima più
+      ardua da raggiungere di tutte le Orobie: sono necessari corda, imbrago e tecnica di arrampicata.`,
+  },
+  {
+    nome: 'Cima Soliva 2710 m EE · Pizzo del Salto 2666 m EE · Cima Sgrò 2683 m EE',
+    testo: `Queste vette fanno parte delle innumerevoli cime nella zona del rifugio; essendo leggermente più basse
+      sono poco frequentate, ma molto suggestive ed alla portata di molti. Non godendo di molta considerazione non
+      hanno un cammino ben tracciato: è compito dell'escursionista individuare le facili e varie vie di salita. Si
+      consiglia la cima di Sgrò per la sua conformazione sulla vetta, fatta di giganteschi lastroni di roccia
+      particolarmente unici.`,
+  },
 ];
 ---
 
 <Layout title="Dove siamo" description="Come raggiungere il rifugio Brunone: i sentieri CAI da Fiumenero e dai rifugi vicini.">
-  <h1 class="font-display text-3xl font-semibold text-brunone-900">Dove siamo</h1>
-  <p class="mt-4 max-w-2xl text-brunone-800">
+  <h1 class="font-display text-3xl font-semibold text-brunone-900">Accesso al rifugio</h1>
+  <p class="mt-4 text-brunone-800">
     Il rifugio Brunone è situato in alta Val Seriana, nel comune di Valbondione, frazione di Fiumenero, sulle
     pendici del pizzo Brunone e del pizzo Redorta, a quota 2297&nbsp;m s.l.m. Il rifugio può essere raggiunto con i
     seguenti percorsi:
@@ -68,18 +102,48 @@ const links = [
           {p.link ? <a href={p.link} class="text-brunone-600 underline">{p.sentiero}</a> : p.sentiero}
           {p.durata && <span class="text-brunone-600">, {p.durata}</span>}
         </h2>
-        <p class="mt-2 whitespace-pre-line text-sm text-brunone-700">{p.testo}</p>
+        <p class="mt-2 text-sm text-brunone-700">{p.testo}</p>
+        {p.videoUrl && (
+          <a href={p.videoUrl} class="mt-3 inline-block text-sm font-medium text-brunone-700 hover:underline">
+            Video del sentiero
+          </a>
+        )}
       </div>
     ))}
   </div>
 
-  <div class="mt-10 grid gap-6 sm:grid-cols-3">
-    {links.map((l) => (
-      <a href={l.href} class="rounded-lg border border-brunone-200 bg-white/60 p-4 hover:shadow-md">
-        <img src={l.img} alt={l.title} class="mb-3 aspect-video w-full rounded object-cover" />
-        <p class="font-medium text-brunone-800">{l.title}</p>
-        <p class="mt-1 text-sm text-brunone-600">{l.desc}</p>
-      </a>
+  <h2 class="mt-12 font-display text-2xl font-semibold text-brunone-900">Mappa</h2>
+  <div class="relative mt-4 overflow-hidden rounded-lg border border-brunone-200">
+    <iframe
+      title="Mappa del rifugio Brunone"
+      class="h-[480px] w-full"
+      loading="lazy"
+      src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=cyclemap&marker=${lat}%2C${lon}`}
+    ></iframe>
+    {/* La mappa resta "congelata" (l'overlay intercetta click/rotellina) finché non ci si
+        clicca sopra: altrimenti scorrendo la pagina con il cursore sopra la mappa si
+        finisce per zoomarla per sbaglio con la rotellina. Un click la attiva (diventa
+        pointer-events-none, quindi trasparente a click/scroll che passano alla mappa
+        sottostante) finché non si sposta il focus altrove. Non c'è un modo per disattivare
+        solo lo zoom da rotellina lasciando il resto: è un iframe di un altro dominio
+        (openstreetmap.org), non possiamo controllarne il JavaScript interno (Leaflet). */}
+    <button
+      type="button"
+      aria-label="Clicca per attivare l'interazione con la mappa"
+      class="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-opacity hover:bg-black/10 hover:opacity-100 focus:pointer-events-none focus:opacity-0"
+    >
+      <span class="rounded bg-black/70 px-3 py-1.5 text-sm font-medium text-white">Clicca per attivare la mappa</span>
+    </button>
+  </div>
+
+  <h2 class="mt-12 font-display text-2xl font-semibold text-brunone-900">Ascensioni</h2>
+  <p class="mt-4 text-brunone-800">Dal rifugio Brunone è possibile raggiungere le seguenti cime:</p>
+  <div class="mt-6 space-y-6">
+    {ascensioni.map((a) => (
+      <div class="rounded-lg border border-brunone-200 bg-white/60 p-5">
+        <h3 class="font-display text-lg font-semibold text-brunone-800">{a.nome}</h3>
+        <p class="mt-2 text-sm text-brunone-700">{a.testo}</p>
+      </div>
     ))}
   </div>
 </Layout>

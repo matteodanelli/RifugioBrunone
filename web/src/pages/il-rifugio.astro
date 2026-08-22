@@ -1,14 +1,50 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import { GALLERIES } from '../data/galleries';
+import old from '../assets/images/old.jpg';
+import old1 from '../assets/images/old1.jpg';
+import old2 from '../assets/images/old2.jpg';
+import panorama from '../assets/images/panorama.jpg';
+
+// Tutte le foto vivono in src/assets/photos/<slug>/{thumb,original}/<n>.jpg (copiate 1:1 dal
+// vecchio src/main/webapp/photos/, una cartella per ciascuna delle vecchie pagine
+// panorami.html, vitaalrifugio.html, ecc.). Il glob le porta nella pipeline immagini di
+// Astro: da qui vengono ridimensionate e convertite in WebP. Prima erano su pagine separate
+// sotto /immagini/, ora tutte qui sotto "Fotografie".
+const allPhotos = import.meta.glob('/src/assets/photos/**/*.jpg', { eager: true }) as Record<
+  string,
+  { default: ImageMetadata }
+>;
+
+function getPhoto(slug: string, kind: 'thumb' | 'original', n: number) {
+  const key = `/src/assets/photos/${slug}/${kind}/${n}.jpg`;
+  const mod = allPhotos[key];
+  if (!mod) throw new Error(`Foto non trovata: ${key}`);
+  return mod.default;
+}
+
+const galleries = GALLERIES.map((gallery) => ({
+  ...gallery,
+  photos: Array.from({ length: gallery.count }, (_, i) => i + 1).map((n) => {
+    const original = getPhoto(gallery.slug, 'original', n);
+    return {
+      n,
+      thumb: getPhoto(gallery.slug, 'thumb', n),
+      original,
+      originalWidth: Math.min(original.width, 1600),
+    };
+  }),
+}));
 ---
 
-<Layout title="Il rifugio" description="La storia del rifugio Antonio Baroni al Brunone, dal 1879 a oggi.">
-  <h1 class="font-display text-3xl font-semibold text-brunone-900">Storia del rifugio</h1>
+<Layout title="Il rifugio" description="La storia e le fotografie del rifugio Antonio Baroni al Brunone, dal 1879 a oggi.">
+  <h1 class="font-display text-3xl font-semibold text-brunone-900">Storia</h1>
 
   <div class="mt-6 grid gap-4 sm:grid-cols-3">
-    <img src="/images/old.jpg" alt="Il rifugio oggi" class="rounded-lg object-cover" />
-    <img src="/images/old1.jpg" alt="Capanna della Brunona" class="rounded-lg object-cover" />
-    <img src="/images/old2.jpg" alt="Rifugio della Brunona" class="rounded-lg object-cover" />
+    <Image src={old} alt="Il rifugio oggi" width={400} format="webp" class="rounded-lg object-cover" />
+    <Image src={old1} alt="Capanna della Brunona" width={400} format="webp" class="rounded-lg object-cover" />
+    <Image src={old2} alt="Rifugio della Brunona" width={400} format="webp" class="rounded-lg object-cover" />
   </div>
 
   <div class="prose prose-brunone mt-8 max-w-none text-brunone-800">
@@ -32,5 +68,97 @@ import Layout from '../layouts/Layout.astro';
     </p>
   </div>
 
-  <img src="/images/panorama.jpg" alt="Vista dal rifugio" class="mt-8 w-full rounded-lg object-cover" />
+  <Image
+    src={panorama}
+    alt="Vista dal rifugio"
+    width={1200}
+    format="webp"
+    class="mt-8 w-full rounded-lg object-cover"
+  />
+
+  <h2 class="mt-16 font-display text-3xl font-semibold text-brunone-900">Fotografie</h2>
+
+  <div class="mt-8 space-y-10">
+    {galleries.map((gallery) => (
+      <div>
+        <h3 class="font-display text-xl font-semibold text-brunone-800">{gallery.title}</h3>
+        <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {gallery.photos.map(({ n, thumb, original, originalWidth }) => (
+            <div class="gallery-item">
+              <button
+                type="button"
+                class="gallery-link block w-full overflow-hidden rounded-lg border border-brunone-200"
+              >
+                <Image
+                  src={thumb}
+                  alt={`${gallery.title} ${n}`}
+                  width={400}
+                  format="webp"
+                  loading="lazy"
+                  class="aspect-square w-full object-cover transition-transform hover:scale-105"
+                />
+              </button>
+              {/* La versione a piena risoluzione resta dentro un <template>: il contenuto
+                  non è "vivo" nel DOM, quindi il browser non la scarica finché non viene
+                  letta al click — apre la lightbox senza dover precaricare tutte le foto. */}
+              <template class="full-photo">
+                <Image
+                  src={original}
+                  alt={`${gallery.title} ${n}`}
+                  width={originalWidth}
+                  format="webp"
+                />
+              </template>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
 </Layout>
+
+<!-- Lightbox minimale in vanilla JS: sostituisce jQuery 1.10 + lightbox-2.6.min.js.
+     Il centraggio nativo di <dialog> (margin: auto) viene azzerato dal reset CSS di
+     Tailwind, quindi va reimposto esplicitamente — altrimenti il dialog resta ancorato
+     nell'angolo in alto a sinistra. -->
+<dialog
+  id="lightbox"
+  class="fixed inset-0 m-auto h-fit w-fit max-h-[92vh] max-w-[92vw] rounded-lg bg-transparent p-0 backdrop:bg-black/80"
+>
+  <img
+    id="lightbox-img"
+    src=""
+    alt=""
+    class="block max-h-[92vh] max-w-[92vw] rounded-lg object-contain opacity-0 transition-opacity duration-150"
+  />
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement | null;
+
+  document.querySelectorAll<HTMLElement>('.gallery-item').forEach((item) => {
+    const link = item.querySelector<HTMLButtonElement>('.gallery-link');
+    const template = item.querySelector<HTMLTemplateElement>('template.full-photo');
+
+    link?.addEventListener('click', () => {
+      if (!dialog || !img || !template) return;
+      const full = template.content.querySelector('img');
+      if (!full) return;
+      // L'elemento <img> è condiviso da tutta la lightbox: senza nasconderlo subito, per
+      // un attimo si rivede la foto aperta in precedenza mentre la nuova carica. decode()
+      // (a differenza dell'evento "load") si risolve sia per un caricamento nuovo sia per
+      // una foto già vista/in cache, quindi funziona in entrambi i casi.
+      img.classList.add('opacity-0');
+      img.alt = full.alt;
+      img.src = full.src;
+      img
+        .decode()
+        .catch(() => {})
+        .finally(() => img.classList.remove('opacity-0'));
+      dialog.showModal();
+    });
+  });
+
+  dialog?.addEventListener('click', () => dialog.close());
+</script>

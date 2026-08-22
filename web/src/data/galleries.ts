@@ -1,22 +1,21 @@
 // Ogni voce corrisponde a una delle vecchie pagine .html in src/main/webapp
 // (panorami.html, vitaalrifugio.html, piattidelrifugio.html, dafiumenero.html,
-// alredorta.html, struttura.html, floraefauna.html). Tutte le foto sono state
-// copiate 1:1 da src/main/webapp/photos/<slug>/{thumb,original}/. Restano da
-// ottimizzare (WebP/AVIF) — vedi MIGRATION.md.
+// alredorta.html, struttura.html, floraefauna.html). Le foto vivono in
+// src/assets/photos/<slug>/{thumb,original}/ e passano dalla pipeline immagini di
+// Astro (conversione WebP, resize) invece di essere servite 1:1 da public/. Renderizzate
+// tutte insieme nella sezione "Fotografie" di /il-rifugio/ (vedi src/pages/il-rifugio.astro).
 export interface Gallery {
   slug: string;
   title: string;
-  cover: string;
   count: number;
-  migrated: boolean;
 }
 
 export const GALLERIES: Gallery[] = [
-  { slug: 'panorami', title: 'Panorami', cover: '/images/panorami.jpg', count: 36, migrated: true },
-  { slug: 'vitaalrifugio', title: 'Vita al Rifugio', cover: '/images/vita.jpg', count: 9, migrated: true },
-  { slug: 'piattidelrifugio', title: 'Piatti del Rifugio', cover: '/images/piatto.jpg', count: 5, migrated: true },
-  { slug: 'dafiumenero', title: 'Salita da Fiumenero', cover: '/images/fiumenero.jpg', count: 11, migrated: true },
-  { slug: 'alredorta', title: 'Salita al Redorta', cover: '/images/redorta.jpg', count: 7, migrated: true },
-  { slug: 'struttura', title: 'Struttura', cover: '/images/struttura.jpg', count: 2, migrated: true },
-  { slug: 'floraefauna', title: 'Flora e Fauna', cover: '/images/ff.jpg', count: 14, migrated: true },
+  { slug: 'panorami', title: 'Panorami', count: 36 },
+  { slug: 'vitaalrifugio', title: 'Vita al Rifugio', count: 9 },
+  { slug: 'piattidelrifugio', title: 'Piatti del Rifugio', count: 5 },
+  { slug: 'dafiumenero', title: 'Salita da Fiumenero', count: 11 },
+  { slug: 'alredorta', title: 'Salita al Redorta', count: 7 },
+  { slug: 'struttura', title: 'Struttura', count: 2 },
+  { slug: 'floraefauna', title: 'Flora e Fauna', count: 14 },
 ];

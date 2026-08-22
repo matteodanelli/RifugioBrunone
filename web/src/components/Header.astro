@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { NAV_ITEMS } from '../data/nav';
+import banner from '../assets/images/banner1.png';
 
 const { pathname } = Astro.url;
 const isActive = (href: string) =>
@@ -9,11 +11,10 @@ const isActive = (href: string) =>
 <header class="sticky top-0 z-50 border-b border-brunone-200 bg-stone-bg/90 backdrop-blur">
   <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
     <a href="/" class="flex items-center gap-2">
-      <img src="/images/banner1.png" alt="Rifugio Brunone" class="h-10 w-auto" />
-      <span class="font-display text-lg font-semibold text-brunone-800">Rifugio Brunone</span>
+      <Image src={banner} alt="Rifugio Brunone" format="webp" class="h-10 w-auto" />
     </a>
 
-    <nav>
+    <nav class="min-w-0">
       <button
         id="nav-toggle"
         class="rounded-md border border-brunone-200 px-3 py-1.5 text-sm font-medium text-brunone-800 sm:hidden"
@@ -25,14 +26,14 @@ const isActive = (href: string) =>
 
       <ul
         id="nav-menu"
-        class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-brunone-200 bg-stone-bg px-4 py-3 sm:static sm:flex sm:flex-row sm:gap-6 sm:border-0 sm:bg-transparent sm:p-0"
+        class="absolute inset-x-0 top-full hidden flex-col gap-1 border-b border-brunone-200 bg-stone-bg px-4 py-3 sm:static sm:flex sm:flex-row sm:flex-nowrap sm:items-center sm:gap-4 sm:border-0 sm:bg-transparent sm:p-0 md:gap-6"
       >
         {NAV_ITEMS.map((item) => (
-          <li>
+          <li class="sm:shrink-0">
             <a
               href={item.href}
               class:list={[
-                'block rounded px-2 py-1.5 text-sm font-medium transition-colors hover:text-brunone-600 sm:px-0 sm:py-0',
+                'block whitespace-nowrap rounded px-2 py-1.5 text-sm font-medium transition-colors hover:text-brunone-600 sm:px-0 sm:py-0',
                 isActive(item.href) ? 'text-brunone-700 underline underline-offset-4' : 'text-brunone-900',
               ]}
             >
