@@ -8,6 +8,7 @@ export interface Gallery {
   slug: string;
   title: string;
   count: number;
+  hidden?: boolean;
 }
 
 export const GALLERIES: Gallery[] = [
@@ -16,6 +17,8 @@ export const GALLERIES: Gallery[] = [
   { slug: 'piattidelrifugio', title: 'Piatti del Rifugio', count: 5 },
   { slug: 'dafiumenero', title: 'Salita da Fiumenero', count: 11 },
   { slug: 'alredorta', title: 'Salita al Redorta', count: 7 },
-  { slug: 'struttura', title: 'Struttura', count: 2 },
+  // Foto poco significative rispetto alle altre gallerie: nascosta su richiesta, dati e
+  // foto restano al loro posto — basta togliere "hidden" per farla ricomparire.
+  { slug: 'struttura', title: 'Struttura', count: 2, hidden: true },
   { slug: 'floraefauna', title: 'Flora e Fauna', count: 14 },
 ];
