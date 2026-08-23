@@ -1,0 +1,25 @@
+# Redirect permanenti dai vecchi URL .html/.jsp (sito Java su App Engine) ai nuovi
+# percorsi, per non perdere l'indicizzazione SEO delle pagine già note a Google.
+# Sintassi Cloudflare: /vecchio  /nuovo  301  (supportata anche dal serving statico
+# di Cloudflare Workers Assets usato da questo progetto, stessa convenzione di Pages).
+
+/index.html             /                        301
+/rifugio.html           /il-rifugio/             301
+/comeraggiungerci.html  /dove-siamo/             301
+/ascensioni.html        /dove-siamo/             301
+/mappa.html             /dove-siamo/             301
+/immagini.html          /il-rifugio/             301
+/panorami.html          /il-rifugio/             301
+/vitaalrifugio.html     /il-rifugio/             301
+/piattidelrifugio.html  /il-rifugio/             301
+/dafiumenero.html       /il-rifugio/             301
+/alredorta.html         /il-rifugio/             301
+/struttura.html         /il-rifugio/             301
+/floraefauna.html       /il-rifugio/             301
+/contatti.html          /contatti/               301
+/avvisi.jsp             /                        301
+
+# /adminPage.jsp, /admin/login, /admin/gestoreAvvisi, /admin/eliminaAvvisi (le vecchie
+# rotte servlet) non sono qui: richiedevano già il login nel vecchio sito, quindi Google
+# non le ha mai indicizzate — non serve un redirect SEO. Oggi /admin/* è comunque protetto
+# da Cloudflare Access, che intercetta la richiesta prima ancora di questo file.

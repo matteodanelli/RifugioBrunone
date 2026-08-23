@@ -37,10 +37,14 @@ sono state rimosse: i loro contenuti sono stati assorbiti nelle pagine sopra.
       `wrangler.jsonc` descrive sia gli asset statici sia un Worker scritto a mano
       (`worker/index.ts`) con binding D1
 - [x] Ottimizzazione immagini — pipeline `astro:assets` (Sharp): conversione a WebP,
-      thumbnail a 400px, foto a piena risoluzione limitate a 1600px, dentro un `<template>`
-      per non precaricarle finché non si clicca. Risultato: **42&nbsp;MB → 20&nbsp;MB** di
-      `dist/`. Uno script di post-build (`scripts/prune-unused-assets.mjs`) ripulisce delle
-      copie JPG non ottimizzate lasciate da `astro:assets`
+      foto a piena risoluzione (niente più miniature separate) limitate a 1600px. Uno
+      script di post-build (`scripts/prune-unused-assets.mjs`) ripulisce delle copie JPG
+      non ottimizzate lasciate da `astro:assets`
+- [x] Redirect — `public/_redirects` mappa i vecchi URL `.html`/`.jsp` del sito Java
+      (`/rifugio.html`, `/mappa.html`, `/ascensioni.html`, `/immagini.html`, una voce per
+      ogni vecchia galleria, ecc.) ai nuovi percorsi con 301, per non perdere il
+      posizionamento SEO quando il dominio passa a Cloudflare. Verificato con
+      `wrangler dev`: redirect funzionanti, pagine normali non toccate
 
 ## Da fare
 
@@ -66,11 +70,6 @@ sostituire l'iframe in `src/pages/dove-siamo.astro`.
 usato nel vecchio sito è Universal Analytics, dismesso da Google: va sostituito con GA4 o
 un'alternativa privacy-friendly come Plausible/Umami), meta tag Open Graph, sitemap
 (Astro la genera con `@astrojs/sitemap`).
-
-**Redirect** — mappare i vecchi URL `.html` (es. `/rifugio.html`, `/immagini.html`,
-`/mappa.html`, `/ascensioni.html`, `/panorami.html`) ai nuovi, con un file `_redirects`
-nella cartella `public/`, per non perdere il posizionamento SEO esistente sui link che
-puntano ancora alle vecchie URL.
 
 **Dismissione del vecchio progetto App Engine** — una volta confermato che il nuovo sito
 è stabile in produzione: spegnere/eliminare l'app Java su App Engine (risparmio di costo)
