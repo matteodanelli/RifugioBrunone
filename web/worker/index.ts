@@ -17,7 +17,6 @@ interface Avviso {
   title: string;
   text: string;
   date: string;
-  important: number;
 }
 
 function json(data: unknown, init: ResponseInit = {}): Response {
@@ -33,7 +32,7 @@ function isAccessAuthenticated(request: Request): boolean {
 
 async function listAvvisi(env: Env): Promise<Avviso[]> {
   const { results } = await env.DB.prepare(
-    'SELECT id, title, text, date, important FROM avvisi ORDER BY date DESC, id DESC',
+    'SELECT id, title, text, date FROM avvisi ORDER BY date DESC, id DESC',
   ).all<Avviso>();
   return results ?? [];
 }
@@ -67,13 +66,12 @@ export default {
           title: string;
           text: string;
           date: string;
-          important: boolean;
         }>;
         if (!body.title?.trim() || !body.text?.trim() || !body.date?.trim()) {
           return json({ error: 'title, text e date sono obbligatori' }, { status: 400 });
         }
-        await env.DB.prepare('INSERT INTO avvisi (title, text, date, important) VALUES (?, ?, ?, ?)')
-          .bind(body.title.trim(), body.text.trim(), body.date.trim(), body.important ? 1 : 0)
+        await env.DB.prepare('INSERT INTO avvisi (title, text, date) VALUES (?, ?, ?)')
+          .bind(body.title.trim(), body.text.trim(), body.date.trim())
           .run();
         return json({ ok: true }, { status: 201 });
       }
