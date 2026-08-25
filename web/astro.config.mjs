@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 // niente altra logica dinamica), quindi non serve un adapter Cloudflare/Worker — solo
 // `wrangler deploy` che pubblica la cartella `dist/` come asset statici. Vedi README.md.
 export default defineConfig({
-  site: 'https://www.rifugiobrunone.it',
+  site: 'https://rifugiobrunone.it',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

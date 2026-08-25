@@ -41,6 +41,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
+    // Redirect www → non-www: il canonico è rifugiobrunone.it senza www.
+    if (url.hostname === 'www.rifugiobrunone.it') {
+      url.hostname = 'rifugiobrunone.it';
+      return Response.redirect(url.toString(), 301);
+    }
+
     // Lettura pubblica: la usa il widget "Avvisi" in home, per tutti i visitatori.
     if (url.pathname === '/api/avvisi' && request.method === 'GET') {
       return json(await listAvvisi(env));
