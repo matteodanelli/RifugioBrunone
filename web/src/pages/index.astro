@@ -3,6 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import heroSource from '../assets/images/hero.jpg';
 import facebookIcon from '../assets/images/Facebook_Logo_Primary.png';
+import instagramIcon from '../assets/images/Instagram_Logo.png';
 
 const hero = await getImage({ src: heroSource, format: 'webp', width: Math.min(heroSource.width, 2000) });
 ---
@@ -21,15 +22,26 @@ const hero = await getImage({ src: heroSource, format: 'webp', width: Math.min(h
         class="absolute inset-0 hidden bg-gradient-to-b from-white/70 via-white/20 to-transparent sm:block"
         aria-hidden="true"
       ></div>
-      <a
-        href="https://www.facebook.com/Rifugio-Brunone-855063957954205"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Facebook"
-        class="absolute right-4 top-4 transition-opacity hover:opacity-80 sm:right-6 sm:top-6"
-      >
-        <Image src={facebookIcon} alt="" format="webp" width={32} height={32} class="h-8 w-8" />
-      </a>
+      <div class="absolute right-4 top-4 flex gap-2 sm:right-6 sm:top-6">
+        <a
+          href="https://www.facebook.com/Rifugio-Brunone-855063957954205"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Facebook"
+          class="transition-opacity hover:opacity-80"
+        >
+          <Image src={facebookIcon} alt="" format="webp" width={32} height={32} class="h-8 w-8" />
+        </a>
+        <a
+          href="https://www.instagram.com/rifugio.brunone/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          class="transition-opacity hover:opacity-80"
+        >
+          <Image src={instagramIcon} alt="" format="webp" width={32} height={32} class="h-8 w-8" />
+        </a>
+      </div>
       <div class="relative hidden flex-col items-start gap-4 pointer-events-none sm:flex">
         <p class="font-display text-sm uppercase tracking-widest text-black">Valbondione &middot; 2297 m</p>
         <h1 class="font-display text-4xl font-semibold text-black sm:text-5xl">Rifugio Brunone</h1>
